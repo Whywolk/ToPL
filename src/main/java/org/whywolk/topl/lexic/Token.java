@@ -1,8 +1,7 @@
 package org.whywolk.topl.lexic;
-import org.whywolk.topl.lexic.Solver;
 
 public class Token {
-    private Solver.TokenType type;
+    private Parser.TokenType type;
     private int line;
     private int start;
     private int end;
@@ -10,12 +9,12 @@ public class Token {
 
     public Token() {}
 
-    public Token(Solver.TokenType type, String value) {
+    public Token(Parser.TokenType type, String value) {
         this.type = type;
         this.value = value;
     }
 
-    public Token(Solver.TokenType type, int line, int start, int end, String value) {
+    public Token(Parser.TokenType type, int line, int start, int end, String value) {
         this.type = type;
         this.line = line;
         this.start = start;
@@ -27,11 +26,11 @@ public class Token {
         System.out.format("%4d | %10s | %5d | %5d | %s %n", this.line, this.type, this.start, this.end, this.value);
     }
 
-    public Solver.TokenType getType() {
+    public Parser.TokenType getType() {
         return type;
     }
 
-    public void setType(Solver.TokenType type) {
+    public void setType(Parser.TokenType type) {
         this.type = type;
     }
 
@@ -65,5 +64,16 @@ public class Token {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return "Token{" +
+                "type=" + type +
+                ", line=" + line +
+                ", start=" + start +
+                ", end=" + end +
+                ", value='" + value + '\'' +
+                '}';
     }
 }

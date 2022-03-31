@@ -1,3 +1,1 @@
-_de_1 = 0xFE and de xor (a and e);de = 0xAA;
-// comment1
-hello = not 0xFF or de; // comment2=
+de = (not x and 0xF));//dsc
