@@ -9,6 +9,7 @@ public class Parser {
     private ArrayList<String> lines;
     private int curPos;
     private int curLinePos;
+    private ArrayList<Token> tokens = new ArrayList<>();
 
     public enum TokenType {
         ID,
@@ -22,8 +23,6 @@ public class Parser {
         BRACKET_R,
         ERROR;
     }
-
-    private ArrayList<Token> tokens = new ArrayList<>();
 
     public Parser() {
         this.doc = "";
@@ -61,16 +60,20 @@ public class Parser {
                 // NEGATIVE or OPERATOR
                 if (ch == 'n' || ch == 'o' || ch == 'x' || ch == 'a') {
                     Token token = getOperator(curPos, line);
+
+                    // If it's NEGATIVE or OPERATOR then go next
                     if (token.getType() != null) {;
                         this.tokens.add(token);
                         continue;
                     }
                 }
+                // Else check for ID
                 if (Character.isLetter(ch) || ch == '_') {
                     Token token = getId(curPos, line);
                     this.tokens.add(token);
                     this.curPos--;
                 }
+                // Else check for NUMBER
                 else if (ch == '0') {
                     Token token = getNumber(curPos, line);
                     this.tokens.add(token);
@@ -100,7 +103,8 @@ public class Parser {
                     Token token = getComment(curPos, line);
                     this.tokens.add(token);
                 }
-                else if (ch != ' ') {
+                // If this not spaces, then ERROR
+                else if (ch != ' ' && ch != '\t') {
                     Token token = new Token(TokenType.ERROR, this.curLinePos, curPos, curPos + 1,
                             "Unexpected symbol : '" + line.charAt(curPos) + "'");
                     this.tokens.add(token);
@@ -118,7 +122,7 @@ public class Parser {
         // get position of delimiter
         while (this.curPos < line.length()) {
             char ch = line.charAt(this.curPos);
-            if (ch == ' ' || ch == ')' || ch == '(' || ch == ';' || ch == '=') {
+            if (ch == ' ' || ch == '\t' || ch == ')' || ch == '(' || ch == ';' || ch == '=') {
                 break;
             }
             this.curPos++;
@@ -143,7 +147,7 @@ public class Parser {
         // get position of delimiter
         while (this.curPos < line.length()) {
             char ch = line.charAt(this.curPos);
-            if (ch == ' ' || ch == ')' || ch == '(' || ch == ';' || ch == '=') {
+            if (ch == ' ' || ch == '\t' || ch == ')' || ch == '(' || ch == ';' || ch == '=') {
                 break;
             }
             this.curPos++;
@@ -170,7 +174,7 @@ public class Parser {
         // get position of delimiter
         while (this.curPos < line.length()) {
             char ch = line.charAt(this.curPos);
-            if (ch == ' ' || ch == ')' || ch == '(' || ch == ';' || ch == '=') {
+            if (ch == ' ' || ch == '\t' || ch == ')' || ch == '(' || ch == ';' || ch == '=') {
                 break;
             }
             this.curPos++;

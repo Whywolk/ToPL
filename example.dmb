@@ -1,1 +1,4 @@
-de = (not x and 0xF));//dsc
+de = 	(not x and 0xF) // hello
+			xor			// world
+		(0xDE or not de);
+// not de
