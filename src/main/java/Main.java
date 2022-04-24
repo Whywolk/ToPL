@@ -12,13 +12,17 @@ public class Main {
 
             Parser parser = new Parser(doc);
             parser.run();
+//
+//            System.out.format("%4s | %10s | %5s | %5s | %s %n", "Line", "Type", "Start", "End", "Value");
+//            System.out.println("----------------------------------------------");
+//            for(Token token : parser.getTokens()) {
+//                token.print();
+//            }
 
-            System.out.format("%4s | %10s | %5s | %5s | %s %n", "Line", "Type", "Start", "End", "Value");
-            System.out.println("----------------------------------------------");
-            for(Token token : parser.getTokens()) {
-                token.print();
+            if (parser.getErrors().isEmpty()) {
+                IdTableBuilder idTableBuilder = new IdTableBuilder(parser.getAllTokens());
+                idTableBuilder.run();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
