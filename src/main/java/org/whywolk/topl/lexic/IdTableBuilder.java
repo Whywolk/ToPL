@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 public class IdTableBuilder {
     // <id_name, [0, 2]> --- IdEntry
-    private AbstractHashTable<String, IdEntry> idTable;
+    private IHashTable<String, IdEntry> idTable;
     private ArrayList<Token> tokens;
     private Tree<Integer> scopes;
     private Tree<Integer> curScope;
 
     public IdTableBuilder(ArrayList<Token> tokens) {
-        this.idTable = new HashTableOpenAddr<>();
+        this.idTable = new HashTableChain<>();
         this.tokens = tokens;
         this.scopes = new Tree<>();
         this.curScope = this.scopes;
@@ -25,7 +25,13 @@ public class IdTableBuilder {
                 IdEntry id = new IdEntry(token);
                 idTable.insert(e.toString(), id);
             }
+            else if (token.getType() == Parser.TokenType.BRACKET_FIGURE_L) {
+                initializeScope();
+            } else if (token.getType() == Parser.TokenType.BRACKET_FIGURE_R) {
+                finalizeScope();
+            }
         }
+        System.out.println("Owari");
     }
 
     private class Entry {
@@ -43,7 +49,7 @@ public class IdTableBuilder {
         }
     }
 
-    public AbstractHashTable<String, IdEntry> getIdTable() {
+    public IHashTable<String, IdEntry> getIdTable() {
         return idTable;
     }
 

@@ -133,7 +133,7 @@ public class HashTableOpenAddr <Key, Value> extends AbstractHashTable <Key, Valu
     }
 
     protected int gIndexFor(int h, int g, int length, int step) {
-        return Math.abs(((h + g*step) % (length-1)));
+        return Math.abs(((h + g*step) % (length)));
     }
 
     protected int gHash(Key k) {

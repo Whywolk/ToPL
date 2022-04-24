@@ -21,6 +21,8 @@ public class Parser {
         END,
         BRACKET_L,
         BRACKET_R,
+        BRACKET_FIGURE_L,
+        BRACKET_FIGURE_R,
         ERROR;
     }
 
@@ -96,6 +98,16 @@ public class Parser {
                 }
                 else if (ch == ')') {
                     Token token = new Token(TokenType.BRACKET_R, this.curLinePos, curPos, curPos + 1,
+                            line.substring(curPos, curPos + 1));
+                    this.tokens.add(token);
+                }
+                else if (ch == '{') {
+                    Token token = new Token(TokenType.BRACKET_FIGURE_L, this.curLinePos, curPos, curPos + 1,
+                            line.substring(curPos, curPos + 1));
+                    this.tokens.add(token);
+                }
+                else if (ch == '}') {
+                    Token token = new Token(TokenType.BRACKET_FIGURE_R, this.curLinePos, curPos, curPos + 1,
                             line.substring(curPos, curPos + 1));
                     this.tokens.add(token);
                 }
