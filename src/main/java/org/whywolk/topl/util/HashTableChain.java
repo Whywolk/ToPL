@@ -1,11 +1,10 @@
 package org.whywolk.topl.util;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class HashTableChain <Key, Value> extends AbstractHashTable <Key, Value> {
 
-    protected LinkedList<Node>[] table;
+    protected LinkedList<Node<Key, Value>>[] table;
 
     public HashTableChain() {
         size = this.DEFAULT_INITIAL_CAPACITY;
@@ -20,34 +19,22 @@ public class HashTableChain <Key, Value> extends AbstractHashTable <Key, Value> 
     }
 
     public void insert(Key k, Value v){
-        // need rehash
         if (isLoaded()) {
-            HashTableChain<Key, Value> newTable = new HashTableChain<Key, Value>(size * 2);
-            for (int i = 0; i < size; i++) {
-                if (table[i] != null) {
-                    Iterator<Node> iter = table[i].iterator();
-                    while (iter.hasNext()) {
-                        Node el = iter.next();
-                        newTable.insert(el.key, el.value);
-                    }
-                }
-            }
-            this.table = newTable.table;
-            this.size = newTable.size;
-            this.count = newTable.count;
+            enlarge();
+            insert(k, v);
         } else {
             int hash = hash(k);
             int i = indexFor(hash, size);
             if (table[i] == null) {
-                table[i] = new LinkedList<Node>();
+                table[i] = new LinkedList<Node<Key, Value>>();
             } else {
-                for (Node el : table[i]) {
-                    if (el.key == k && el.value == v) {
+                for (Node<Key, Value> el : table[i]) {
+                    if (el.key.equals(k)) {
                         return;
                     }
                 }
             }
-            table[i].add(new Node(hash, k, v));
+            table[i].add(new Node<Key, Value>(hash, k, v));
             count++;
         }
     }
@@ -56,14 +43,46 @@ public class HashTableChain <Key, Value> extends AbstractHashTable <Key, Value> 
         int hash = hash(k);
         int i = indexFor(hash, size);
         if (table[i] != null) {
-            Iterator<Node> iter = table[i].iterator();
-            while (iter.hasNext()) {
-                Node el = iter.next();
+            for (Node<Key, Value> el : table[i]) {
                 if (el.key.equals(k)) {
                     return el.value;
                 }
             }
         }
         return null;
+    }
+
+    public void remove(Key k) {
+        int hash = hash(k);
+        int i = indexFor(hash, size);
+        if (table[i] != null) {
+            for (Node<Key, Value> el : table[i]) {
+                if (el.key.equals(k)) {
+                    table[i].remove(el);
+                    count--;
+                }
+            }
+        }
+    }
+
+    protected void enlarge() {
+        if (size == MAX_CAPACITY) {
+            try {
+                throw new Exception("HashTable Overflow");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        HashTableChain<Key, Value> newTable = new HashTableChain<>(size * 2);
+        for (int i = 0; i < size; i++) {
+            if (table[i] != null) {
+                for (Node<Key, Value> el : table[i]) {
+                    newTable.insert(el.key, el.value);
+                }
+            }
+        }
+        this.table = newTable.table;
+        this.size = newTable.size;
+        this.count = newTable.count;
     }
 }
