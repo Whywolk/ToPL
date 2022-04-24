@@ -63,7 +63,7 @@ public class Tree <T> {
         String str = "";
         Tree<T> node = this;
         while (!node.isRoot()) {
-            str = str + ("/" + node.parent.children.indexOf(node));
+            str = ("/" + node.parent.children.indexOf(node)) + str;
             node = node.parent;
         }
         return "0" + str;
