@@ -37,8 +37,18 @@ public class Parser {
         this.curPos = 0;
     }
 
-    public ArrayList<Token> getTokens() {
+    public ArrayList<Token> getAllTokens() {
         return this.tokens;
+    }
+
+    public ArrayList<Token> getErrors() {
+        ArrayList<Token> errors = new ArrayList<>();
+        for (Token token : this.tokens) {
+            if (token.getType() == TokenType.ERROR) {
+                errors.add(token);
+            }
+        }
+        return errors;
     }
 
     public String getDoc() {
