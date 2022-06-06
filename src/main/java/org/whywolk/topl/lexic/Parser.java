@@ -1,3 +1,9 @@
+/*
+ * License: GNU GPL version 3 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * Copyright (c) 2022  Author: Alex Shirshov <https://github.com/Whywolk>
+ *
+ */
+
 package org.whywolk.topl.lexic;
 
 import java.util.ArrayList;
@@ -41,6 +47,16 @@ public class Parser {
 
     public ArrayList<Token> getAllTokens() {
         return this.tokens;
+    }
+
+    public ArrayList<Token> getTokens() {
+        ArrayList<Token> filteredTokens = new ArrayList<>();
+        for (Token token : this.tokens) {
+            if (token.getType() != TokenType.COMMENT) {
+                filteredTokens.add(token);
+            }
+        }
+        return filteredTokens;
     }
 
     public ArrayList<Token> getErrors() {

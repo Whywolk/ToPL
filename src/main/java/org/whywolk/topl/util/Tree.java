@@ -1,3 +1,9 @@
+/*
+ * License: GNU GPL version 3 <https://www.gnu.org/licenses/gpl-3.0.html>
+ * Copyright (c) 2022  Author: Alex Shirshov <https://github.com/Whywolk>
+ *
+ */
+
 package org.whywolk.topl.util;
 
 import java.util.ArrayList;
@@ -67,5 +73,20 @@ public class Tree <T> {
             node = node.parent;
         }
         return "0" + str;
+    }
+
+    public void print() {
+        Tree<T> node = this;
+        printNode(node);
+    }
+
+    private void printNode(Tree<T> node) {
+        for (int i = 0; i < node.getLevel(); i++) {
+            System.out.print("    ");
+        }
+        System.out.println(node.getData());
+        for (Tree<T> child : node.getChildren()) {
+            printNode(child);
+        }
     }
 }
